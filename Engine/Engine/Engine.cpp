@@ -40,6 +40,7 @@ namespace Wanted
 		{
 			// 현재 시간 구하기.
 			QueryPerformanceCounter(&time);
+			currentTime = time.QuadPart;
 
 			// Frame Time 계산
 			float deltaTime
@@ -56,7 +57,7 @@ namespace Wanted
 				ProcessInput();
 
 				// Frame 처리.
-				Tick(1.0f / 60.0f);
+				Tick(deltaTime);
 				Draw();
 
 				// 이전 시간 값 갱신.
@@ -69,9 +70,10 @@ namespace Wanted
 				}
 			}
 
-			// TODO: 정리 작업.
-			std::cout << "Engine has been shutdown....";
 		}
+
+		// TODO: 정리 작업.
+		std::cout << "Engine has been shutdown....";
 	}
 
 	void Engine::QuitEngine()
