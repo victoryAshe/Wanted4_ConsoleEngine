@@ -11,8 +11,18 @@ namespace Wanted
 	}
 
 
-	void Actor::BeginPlay() {}
-	void Actor:: Tick(float deltaTime){}
-	void Actor:: Draw(){}
+	void Actor::BeginPlay() 
+	{
+		// Event 받은 후에는 flag 설정.
+		hasBeganPlay = true;
+	}
+
+	void Actor:: Tick(float deltaTime)
+	{
+	}
+
+	void Actor:: Draw()
+	{
+	}
 
 }

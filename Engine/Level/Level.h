@@ -22,6 +22,9 @@ namespace Wanted
 		virtual void Tick(float deltaTime);
 		virtual void Draw();
 
+		// Actor 추가 함수.
+		void AddNewActor(Actor* newActor);
+
 
 	protected:
 		// Actor 배열

@@ -11,6 +11,9 @@ namespace Wanted
 
 	Engine::~Engine()
 	{
+		// mainLevel 제거.
+		delete mainLevel;
+		mainLevel = nullptr;
 	}
 
 	void Engine::Run()
@@ -110,7 +113,7 @@ namespace Wanted
 			mainLevel = nullptr;
 		}
 
-
+		mainLevel = newLevel;
 	}
 
 	void Engine::ProcessInput()
@@ -146,11 +149,12 @@ namespace Wanted
 		//std::cout
 		//	<< "DeltaTime: " << deltaTime
 		//	<< ", FPS: " << (1.0f / deltaTime) << "\n";
-		//
-		//if(GetKeyDown(VK_ESCAPE))
-		//{
-		//	QuitEngine();
-		//}
+		
+		// ESC 키 누르면 종료.
+		if(GetKeyDown(VK_ESCAPE))
+		{
+			QuitEngine();
+		}
 
 		// Level에 event 흘리기.
 		// 예외 처리.
