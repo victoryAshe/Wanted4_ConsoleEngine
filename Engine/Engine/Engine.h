@@ -2,6 +2,8 @@
 
 namespace Wanted
 {
+	class Level;
+
 	// Main game engine class.
 	class Engine
 	{
@@ -35,9 +37,16 @@ namespace Wanted
 		// 현재 눌려있으면 반복 호출.
 		bool GetKey(int keyCode);
 
+		// 새 level을 추가(설정)하는 함수.
+		void SetNewLevel(Level* newLevel);
+
 	private:
 		// 입력 처리 함수.
 		void ProcessInput();
+
+		// GamePlay 시작 함수.
+		// Unity의 경우: Start/Awake.
+		void BeginPlay();
 
 		// Update 함수
 		void Tick(float deltaTime);
@@ -52,6 +61,9 @@ namespace Wanted
 
 		// Key State 저장용 배열.
 		KeyState keyStates[255] = {};
+
+		// Main Level
+		class Level* mainLevel = nullptr;
 	};
 
 

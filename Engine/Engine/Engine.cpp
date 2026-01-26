@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "Level/Level.h"
 #include <iostream>
 #include <Windows.h>
 
@@ -53,10 +54,10 @@ namespace Wanted
 			// 고정 frame 기법.
 			if (deltaTime >= oneFrameTime)
 			{
-
 				ProcessInput();
 
 				// Frame 처리.
+				BeginPlay();
 				Tick(deltaTime);
 				Draw();
 
@@ -98,6 +99,20 @@ namespace Wanted
 		return keyStates[keyCode].isKeyDown;
 	}
 
+	void Engine::SetNewLevel(Level* newLevel)
+	{
+		// 기존 레벨 있는지 확인.
+		// 있으면 기존 레벨 제거.
+		// TODO: 임시 코드. 레벨 전환할 때는 바로 제거하면 안됨!
+		if (mainLevel)
+		{
+			delete mainLevel;
+			mainLevel = nullptr;
+		}
+
+
+	}
+
 	void Engine::ProcessInput()
 	{
 		// Key 마다의 Input 읽기.
@@ -111,19 +126,53 @@ namespace Wanted
 
 	}
 
+	void Engine::BeginPlay()
+	{
+		// Level이 있으면 event 전달.
+		if (!mainLevel)
+		{
+			// Silent is violent. 침묵은 폭력이다.
+			// Log message 남기지 않으면 안된다!
+			std::cout << "Error: Engine::BeginPlay(). mainLevel is empty.\n";
+			return;
+		}
+
+		mainLevel->BeginPlay();
+
+	}
+
 	void Engine::Tick(float deltaTime)
 	{
-		std::cout
-			<< "DeltaTime: " << deltaTime
-			<< ", FPS: " << (1.0f / deltaTime) << "\n";
+		//std::cout
+		//	<< "DeltaTime: " << deltaTime
+		//	<< ", FPS: " << (1.0f / deltaTime) << "\n";
+		//
+		//if(GetKeyDown(VK_ESCAPE))
+		//{
+		//	QuitEngine();
+		//}
 
-		if(GetKeyDown(VK_ESCAPE))
+		// Level에 event 흘리기.
+		// 예외 처리.
+		if (!mainLevel)
 		{
-			QuitEngine();
+			std::cout << "Error: Engine::Tick(). mainLevel is empty.\n";
+			return;
 		}
+
+		mainLevel->Tick(deltaTime);
 	}
 
 	void Engine::Draw()
 	{
+		// Level에 event 흘리기.
+		// 예외 처리.
+		if (!mainLevel)
+		{
+			std::cout << "Error: Engine::Draw(). mainLevel is empty.\n";
+			return;
+		}
+
+		mainLevel->Draw();
 	}
 }
