@@ -1,11 +1,13 @@
 #pragma once
 
+#include "Common/Common.h"
+
 namespace Wanted
 {
 	class Level;
 
 	// Main game engine class.
-	class Engine
+	class WANTED_API Engine
 	{
 		// Data.
 		// Key에 대하여: Down/Up/Key

@@ -1,6 +1,8 @@
 #pragma once
 #include "Actor.h"
-class TestActor : public Wanted::Actor
+#include "Common/Common.h"
+
+class WANTED_API TestActor : public Wanted::Actor
 {
 //public:
 protected:
