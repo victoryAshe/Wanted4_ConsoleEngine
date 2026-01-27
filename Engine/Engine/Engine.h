@@ -24,6 +24,9 @@ namespace Wanted
 		// 새 level을 추가(설정)하는 함수.
 		void SetNewLevel(Level* newLevel);
 
+		// 전역 접근 함수.
+		static Engine& Get();
+
 	private:
 		// GamePlay 시작 함수.
 		// Unity의 경우: Start/Awake.
@@ -44,6 +47,9 @@ namespace Wanted
 
 		// Main Level
 		class Level* mainLevel = nullptr;
+
+		// 전역 변수.
+		static Engine* instance;
 	};
 
 
