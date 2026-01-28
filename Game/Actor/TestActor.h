@@ -1,9 +1,10 @@
 #pragma once
 #include "Actor/Actor.h"
-#include "Common/Common.h"
 
 class TestActor : public Wanted::Actor
 {
+	RTTI_DECLARATIONS(TestActor, Actor)
+
 //public:
 protected:
 	virtual void BeginPlay() override;
