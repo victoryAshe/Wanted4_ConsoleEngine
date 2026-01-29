@@ -8,6 +8,13 @@ namespace Wanted
 	class Level;
 	class Input;
 
+	// Engine Setting Structure.
+	struct EngineSetting
+	{
+		// Frame spped(== Framerate.)
+		float framerate = 0.0f;
+	};
+
 	// Main game engine class.
 	class WANTED_API Engine
 	{
@@ -28,6 +35,9 @@ namespace Wanted
 		static Engine& Get();
 
 	private:
+		// Load Setting File.
+		void LoadSetting();
+
 		// GamePlay 시작 함수.
 		// Unity의 경우: Start/Awake.
 		void BeginPlay();
@@ -41,6 +51,9 @@ namespace Wanted
 	private:
 		// Engine 종료 Flag
 		bool isQuit = false;
+
+		// Engine Setting value.
+		EngineSetting setting;
 
 		// 입력 관리자.
 		Input* input = nullptr;

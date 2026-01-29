@@ -16,6 +16,22 @@ namespace Wanted
 
 		// 입력 관리자 생성.
 		input = new Input();
+
+		// 설정 파일 load.
+		LoadSetting();
+
+		// 커서 끄기.
+		CONSOLE_CURSOR_INFO info = {};
+		GetConsoleCursorInfo(
+			GetStdHandle(STD_OUTPUT_HANDLE),
+			&info
+		);
+
+		info.bVisible = false;
+		SetConsoleCursorInfo(
+			GetStdHandle(STD_OUTPUT_HANDLE),
+			&info
+		);
 	}
 
 	Engine::~Engine()
@@ -55,10 +71,10 @@ namespace Wanted
 		currentTime = time.QuadPart;
 		previousTime = currentTime;
 
-		// 기준 Frame(단위: 초).
-		float targetFrameRate = 120.0f;
-		float oneFrameTime = 1.0f / targetFrameRate;
-
+		// 기준 frame (단위: 초)
+		setting.framerate
+			= setting.framerate == 0.0f ? 60.0f : setting.framerate;
+		float oneFrameTime = 1.0f / setting.framerate;
 
 		// Engine Loop (Game Loop)
 		while (!isQuit)
@@ -95,6 +111,19 @@ namespace Wanted
 
 		// TODO: 정리 작업.
 		std::cout << "Engine has been shutdown....";
+
+		// 커서 켜기.
+		CONSOLE_CURSOR_INFO info = {};
+		GetConsoleCursorInfo(
+			GetStdHandle(STD_OUTPUT_HANDLE),
+			&info
+		);
+
+		info.bVisible = true;
+		SetConsoleCursorInfo(
+			GetStdHandle(STD_OUTPUT_HANDLE),
+			&info
+		);
 	}
 
 	void Engine::QuitEngine()
@@ -127,6 +156,33 @@ namespace Wanted
 		}
 
 		return *instance;
+	}
+
+	void Engine::LoadSetting()
+	{
+		// Open Engine Setting File.
+		FILE* file = nullptr;
+		fopen_s(&file, "../Config/Setting.txt", "rt");
+
+		// Exception Handling
+		if (!file)
+		{
+			std::cout << "Failed to open Engine Setting file.\n";
+			__debugbreak();
+			return;
+		}
+
+		// file에서 읽은 data를 담을 buffer.
+		char buffer[2048] = {};
+
+		// read string size in file
+		size_t readSize = fread(buffer, sizeof(char), 2048, file);
+
+		// Data extract using string format.
+		sscanf_s(buffer, "framerate = %f", &setting.framerate);
+
+		// Close File.
+		fclose(file);
 	}
 
 	void Engine::BeginPlay()
