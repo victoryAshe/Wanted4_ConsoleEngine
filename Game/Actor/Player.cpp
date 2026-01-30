@@ -1,18 +1,20 @@
-#include "TestActor.h"
+#include "Player.h"
 #include "Core/Input.h"
 #include "Engine/Engine.h"
+#include "Actor/Box.h"
+#include "Level/Level.h"
 #include <iostream>
 #include <Windows.h>
 
 using namespace Wanted;
 
-TestActor::TestActor()
+Player::Player()
 	//:Actor()
-	:super('T', Vector2(0,3), Color::Red) // super: RTTI에서 지정해준 부모 객체.
+	:super('P', Vector2(0,3), Color::Red) // super: RTTI에서 지정해준 부모 객체.
 {
 }
 
-void TestActor::BeginPlay()
+void Player::BeginPlay()
 {
 	// 상위 함수 호출.
 	// C++는 부모 함수 가리키는 pointer가 없음.
@@ -21,15 +23,26 @@ void TestActor::BeginPlay()
 	//std::cout << "TestActor::BeginPlay().\n";
 }
 
-void TestActor::Tick(float deltaTime)
+void Player::Tick(float deltaTime)
 {
 	Actor::Tick(deltaTime);
 
-	if (Wanted::Input::Get().GetKeyDown('Q'))
+	if (Input::Get().GetKeyDown('Q'))
 	{
 		// TODO: Game Engine 종료 요청.
-		Wanted::Engine::Get().QuitEngine();
+		Engine::Get().QuitEngine();
 	}
+
+	// "Space" key => Create Box
+	if (Input::Get().GetKeyDown(VK_SPACE))
+	{
+		// Create Box
+		if (owner)
+		{
+			owner->AddNewActor(new Box(GetPosition()));
+		}
+	}
+
 
 	// 이동
 	if (Input::Get().GetKey(VK_RIGHT) && GetPosition().x <20)
@@ -53,7 +66,7 @@ void TestActor::Tick(float deltaTime)
 		SetPosition(newPosition);
 	}
 
-	if (Input::Get().GetKey(VK_DOWN) && GetPosition().y < 20)
+	if (Input::Get().GetKey(VK_DOWN) && GetPosition().y < 10)
 	{
 		Vector2 newPosition = GetPosition();
 		newPosition.y += 1;
@@ -64,7 +77,7 @@ void TestActor::Tick(float deltaTime)
 	//	<< ", FPS: " << (1.0f / deltaTime) << ".\n";
 }
 
-void TestActor::Draw()
+void Player::Draw()
 {
 	Actor::Draw();
 }

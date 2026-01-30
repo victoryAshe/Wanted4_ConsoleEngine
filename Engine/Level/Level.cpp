@@ -58,7 +58,11 @@ namespace Wanted {
 
 	void Level::AddNewActor(Actor* newActor)
 	{
+		// 나중에 추가를 위해 임시 배열에 저장.
 		addRequestedActors.emplace_back(newActor);
+
+		// Set Ownership
+		newActor->SetOwner(this);
 	}
 
 	void Level::ProcessAddAndDestroyActors()

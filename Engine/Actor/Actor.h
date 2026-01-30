@@ -6,6 +6,8 @@
 
 namespace Wanted
 {
+	class Level;
+
 	class WANTED_API Actor: public RTTI
 	{
 		// Add RTTI code
@@ -27,6 +29,10 @@ namespace Wanted
 		// 위치 변경 및 읽기 함수.
 		void SetPosition(const Vector2& newPosition);
 		inline Vector2 GetPosition() const { return position; }
+
+		// Add/Read Ownership.
+		inline void SetOwner(Level* newOwner) { owner = newOwner; }
+		inline Level* GetOwner() const { return owner; }
 
 		// Getter.
 		inline bool HasBeganPlay() const 
@@ -57,7 +63,11 @@ namespace Wanted
 		// 그릴 문자(이미지.)
 		char image = ' ';
 
+		// 색상
 		Color color = Color::White;
+
+		// Ownership.
+		Level* owner = nullptr;
 
 	private:
 		// 위치.

@@ -107,11 +107,8 @@ namespace Wanted
 
 		}
 
-		// TODO: 정리 작업.
-		std::cout << "Engine has been shutdown....";
-		
-		// 커서 끄기.
-		Util::TurnOnCursor();
+		// 정리
+		Shutdown();
 	}
 
 	void Engine::QuitEngine()
@@ -144,6 +141,15 @@ namespace Wanted
 		}
 
 		return *instance;
+	}
+
+	void Engine::Shutdown()
+	{
+		// 정리 작업.
+		std::cout << "Engine has been shutdown....";
+
+		// 커서 끄기.
+		Util::TurnOnCursor();
 	}
 
 	void Engine::LoadSetting()
