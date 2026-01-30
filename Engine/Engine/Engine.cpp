@@ -1,6 +1,8 @@
 #include "Engine.h"
 #include "Level/Level.h"
 #include "Core/Input.h"
+#include "Util/Util.h"
+
 #include <iostream>
 #include <Windows.h>
 
@@ -21,17 +23,7 @@ namespace Wanted
 		LoadSetting();
 
 		// 커서 끄기.
-		CONSOLE_CURSOR_INFO info = {};
-		GetConsoleCursorInfo(
-			GetStdHandle(STD_OUTPUT_HANDLE),
-			&info
-		);
-
-		info.bVisible = false;
-		SetConsoleCursorInfo(
-			GetStdHandle(STD_OUTPUT_HANDLE),
-			&info
-		);
+		Util::TurnOffCursor();
 	}
 
 	Engine::~Engine()
@@ -105,25 +97,21 @@ namespace Wanted
 				previousTime = currentTime;
 
 				input->SavePreviousInputStates();
+			
+				// Level에 요청됨 Actor 추가/제거 처리.
+				if (mainLevel)
+				{
+					mainLevel->ProcessAddAndDestroyActors();
+				}
 			}
 
 		}
 
 		// TODO: 정리 작업.
 		std::cout << "Engine has been shutdown....";
-
-		// 커서 켜기.
-		CONSOLE_CURSOR_INFO info = {};
-		GetConsoleCursorInfo(
-			GetStdHandle(STD_OUTPUT_HANDLE),
-			&info
-		);
-
-		info.bVisible = true;
-		SetConsoleCursorInfo(
-			GetStdHandle(STD_OUTPUT_HANDLE),
-			&info
-		);
+		
+		// 커서 끄기.
+		Util::TurnOnCursor();
 	}
 
 	void Engine::QuitEngine()

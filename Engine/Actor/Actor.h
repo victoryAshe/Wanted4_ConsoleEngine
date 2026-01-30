@@ -2,6 +2,7 @@
 
 #include "Common/RTTI.h"
 #include "Math/Vector2.h"
+#include "Math/Color.h"
 
 namespace Wanted
 {
@@ -13,7 +14,8 @@ namespace Wanted
 	public:
 		Actor(
 			const char image = ' ',
-			const Vector2& position = Vector2::Zero
+			const Vector2& position = Vector2::Zero,
+			Color color = Color::White
 			);
 		virtual ~Actor();
 
@@ -54,6 +56,8 @@ namespace Wanted
 
 		// 그릴 문자(이미지.)
 		char image = ' ';
+
+		Color color = Color::White;
 
 	private:
 		// 위치.

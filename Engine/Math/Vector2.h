@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common/Common.h"
+#include <Windows.h>
 
 namespace Wanted
 {
@@ -21,6 +22,9 @@ namespace Wanted
 
 		bool operator==(const Vector2& other) const;
 		bool operator!=(const Vector2& other) const;
+
+		// 형변환 연산자 overloading.
+		operator COORD() const;
 
 		// Vector 기본 값.
 		static Vector2 Zero;

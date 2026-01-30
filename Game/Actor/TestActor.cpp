@@ -8,7 +8,7 @@ using namespace Wanted;
 
 TestActor::TestActor()
 	//:Actor()
-	:super('T', Vector2(0,3)) // super: RTTI에서 지정해준 부모 객체.
+	:super('T', Vector2(0,3), Color::Red) // super: RTTI에서 지정해준 부모 객체.
 {
 }
 
@@ -43,6 +43,20 @@ void TestActor::Tick(float deltaTime)
 	{
 		Vector2 newPosition = GetPosition();
 		newPosition.x -= 1;
+		SetPosition(newPosition);
+	}
+
+	if (Input::Get().GetKey(VK_UP) && GetPosition().y > 0)
+	{
+		Vector2 newPosition = GetPosition();
+		newPosition.y -= 1;
+		SetPosition(newPosition);
+	}
+
+	if (Input::Get().GetKey(VK_DOWN) && GetPosition().y < 20)
+	{
+		Vector2 newPosition = GetPosition();
+		newPosition.y += 1;
 		SetPosition(newPosition);
 	}
 
