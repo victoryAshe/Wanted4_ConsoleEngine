@@ -50,6 +50,8 @@ namespace Wanted
 			return destroyRequested; 
 		}
 
+		inline int GetSortingOrder() const { return sortingOrder; }
+
 	protected:
 		// 이미 BeginPlay event를 받았는지 여부.
 		bool hasBeganPlay = false;
@@ -68,6 +70,9 @@ namespace Wanted
 
 		// Ownership.
 		Level* owner = nullptr;
+
+		// Render priority: 값이 크면 우선순위가 높도록 설정.
+		int sortingOrder = 0;
 
 	private:
 		// 위치.
