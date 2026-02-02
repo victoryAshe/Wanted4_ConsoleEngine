@@ -81,7 +81,7 @@ void Player::Tick(float deltaTime)
 
 	if (Input::Get().GetKeyDown(VK_UP) && GetPosition().y > 0)
 	{
-		Vector2 newPosition(GetPosition().x, GetPosition().y+1);
+		Vector2 newPosition(GetPosition().x, GetPosition().y - 1);
 		if (canPlayerMoveInterface->CanMove(GetPosition(), newPosition))
 		{
 			SetPosition(newPosition);
@@ -90,7 +90,7 @@ void Player::Tick(float deltaTime)
 
 	if (Input::Get().GetKeyDown(VK_DOWN) && GetPosition().y < 10)
 	{
-		Vector2 newPosition(GetPosition().x, GetPosition().y - 1);
+		Vector2 newPosition(GetPosition().x, GetPosition().y + 1);
 		if (canPlayerMoveInterface->CanMove(GetPosition(), newPosition))
 		{
 			SetPosition(newPosition);

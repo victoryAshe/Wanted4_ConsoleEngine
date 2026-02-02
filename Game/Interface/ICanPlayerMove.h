@@ -11,6 +11,6 @@ public:
 	// nextPosition: Player가 이동하려는 위치.
 	virtual bool CanMove(
 		const Wanted::Vector2& playerPosition,
-		const Wanted::Vector2& newPosition
+		const Wanted::Vector2& nextPosition
 	) = 0;
 };
