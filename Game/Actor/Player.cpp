@@ -3,6 +3,9 @@
 #include "Engine/Engine.h"
 #include "Actor/Box.h"
 #include "Level/Level.h"
+
+#include "Interface/ICanPlayerMove.h"
+
 #include <iostream>
 #include <Windows.h>
 
@@ -44,39 +47,55 @@ void Player::Tick(float deltaTime)
 			owner->AddNewActor(new Box(GetPosition()));
 		}
 	}
+	
+	// check interface.
+	ICanPlayerMove* canPlayerMoveInterface = nullptr;
+
+	// check ownership(null-check)
+	if (GetOwner())
+	{
+		// type casting
+		canPlayerMoveInterface = dynamic_cast<ICanPlayerMove*>(GetOwner());
+	}
+	else  return;
 
 
 	// ¿Ãµø
-	if (Input::Get().GetKey(VK_RIGHT) && GetPosition().x <20)
+	if (Input::Get().GetKeyDown(VK_RIGHT) && GetPosition().x <20)
 	{
-		Vector2 newPosition = GetPosition();
-		newPosition.x += 1;
-		SetPosition(newPosition);
+		Vector2 newPosition(GetPosition().x + 1, GetPosition().y);
+		if (canPlayerMoveInterface->CanMove(GetPosition(), newPosition))
+		{
+			SetPosition(newPosition);
+		}
 	}
 
-	if (Input::Get().GetKey(VK_LEFT) && GetPosition().x > 0)
+	if (Input::Get().GetKeyDown(VK_LEFT) && GetPosition().x > 0)
 	{
-		Vector2 newPosition = GetPosition();
-		newPosition.x -= 1;
-		SetPosition(newPosition);
+		Vector2 newPosition(GetPosition().x - 1, GetPosition().y);
+		if (canPlayerMoveInterface->CanMove(GetPosition(), newPosition))
+		{
+			SetPosition(newPosition);
+		}
 	}
 
-	if (Input::Get().GetKey(VK_UP) && GetPosition().y > 0)
+	if (Input::Get().GetKeyDown(VK_UP) && GetPosition().y > 0)
 	{
-		Vector2 newPosition = GetPosition();
-		newPosition.y -= 1;
-		SetPosition(newPosition);
+		Vector2 newPosition(GetPosition().x, GetPosition().y+1);
+		if (canPlayerMoveInterface->CanMove(GetPosition(), newPosition))
+		{
+			SetPosition(newPosition);
+		}
 	}
 
-	if (Input::Get().GetKey(VK_DOWN) && GetPosition().y < 10)
+	if (Input::Get().GetKeyDown(VK_DOWN) && GetPosition().y < 10)
 	{
-		Vector2 newPosition = GetPosition();
-		newPosition.y += 1;
-		SetPosition(newPosition);
+		Vector2 newPosition(GetPosition().x, GetPosition().y - 1);
+		if (canPlayerMoveInterface->CanMove(GetPosition(), newPosition))
+		{
+			SetPosition(newPosition);
+		}
 	}
-
-	//std::cout << "TestActor::Tick().delataTime: " << deltaTime
-	//	<< ", FPS: " << (1.0f / deltaTime) << ".\n";
 }
 
 void Player::Draw()
