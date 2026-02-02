@@ -8,9 +8,9 @@
 
 using namespace Wanted;
 
-Player::Player()
+Player::Player(const Vector2& position)
 	//:Actor()
-	:super('P', Vector2(0,3), Color::Red) // super: RTTI에서 지정해준 부모 객체.
+	:super('P', position, Color::Red) // super: RTTI에서 지정해준 부모 객체.
 {
 	// Render prirority 충분히 높게 설정.
 	sortingOrder = 10;
