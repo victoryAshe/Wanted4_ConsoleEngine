@@ -95,9 +95,99 @@ namespace Wanted
 
 		return *instance;
 	}
+
+	void Renderer::Clear()
+	{
+		// Clear Screen.
+		// 1. Frmae(2차원 배열 데이터) 지우기.
+		frame->Clear(screenSize);
+
+		// 콘솔 버퍼 지우기.
+		GetCurrentBuffer()->Clear();
+	}
 	
 	void Renderer::Draw()
 	{
+		// Clear Screen.
+		Clear();
+
+		// 전제 조건: Level의 모든 Actor가 Renderer에 Submit을 완료해야 함!
+		// RenderQueue를 순회하면서 Frame 채우기.
+		for(const RenderCommand& command: renderQueue)
+		{
+			// 화면에 그릴 text가 없으면 건너뜀.
+			if (!command.text)
+			{
+				continue;
+			}
+
+			// 세로 기준 화면 벗어났는지 확인.
+			if(command.position.y < 0
+				|| command.position.y >= screenSize.y)
+			{
+				continue;
+			}
+
+			// 화면에 그릴 문자열 길이.
+			const int length = static_cast<int>(strlen(command.text));
+
+			// 안그려도 되면 건너뜀.
+			if (length <= 0)
+			{
+				continue;
+			}
+
+			// x좌표 기준으로 화면에서 벗어났는지 확인.
+			const int startX = command.position.x;
+			const int endX = command.position.x + length - 1;
+
+			if (endX < 0 || startX >= screenSize.x)
+			{
+				continue;
+			}
+
+			// Get Visible Positon.
+			const int visibleStart = startX < 0 ? 0 : startX;
+			const int visibleEnd = endX >= screenSize.x ? screenSize.x - 1 : endX;
+
+			// Set String.
+			for (int x = visibleStart; x <= visibleEnd; ++x)
+			{
+				// 문자열 안의 문자 index.
+				const int sourceIndex = x - startX;
+
+				// Frame (2차원 문자 배열) index.
+				const int index
+					= (command.position.y * screenSize.x) + x;
+
+				// Sorting order 비교.
+				if (frame->sortingOrderArray[index] > command.sortingOrder)
+				{
+					// 같은 경우에도 덮어씀.
+					continue;
+				}
+
+				// Data 기록.
+				frame->charInfoArray[index].Char.AsciiChar
+					= command.text[sourceIndex];
+
+				frame->charInfoArray[index].Attributes
+					= (WORD)command.color;
+
+				// Update Sorting order.
+				frame->sortingOrderArray[index] = command.sortingOrder;
+			}
+			
+		}
+
+		// Draw.
+		GetCurrentBuffer()->Draw(frame->charInfoArray);
+
+		// Buffer 교환.
+		Present();
+
+		// Clear RenderQueue.
+		renderQueue.clear();
 	}
 
 	void Renderer::Submit(
@@ -107,14 +197,29 @@ namespace Wanted
 		int sortingOrder = 0
 	)
 	{
+		// Create Render Data => Add to Queue
+		RenderCommand command = {};
+		command.text = text;
+		command.position = position;
+		command.color = color;
+		command.sortingOrder = sortingOrder;
 
+		renderQueue.emplace_back(command);
 	}
 
 	void Renderer::Present()
 	{
+		// Buffer 교환.
+		SetConsoleActiveScreenBuffer(
+			GetCurrentBuffer()->GetBuffer()
+		);
+
+		// index 교체.
+		currentBufferIndex = 1 - currentBufferIndex;
 	}
 
 	ScreenBuffer* Renderer::GetCurrentBuffer()
 	{
+		return screenBuffers[currentBufferIndex];
 	}
 }

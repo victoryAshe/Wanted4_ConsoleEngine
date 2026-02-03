@@ -90,7 +90,7 @@ namespace Wanted
 		int currentBufferIndex = 0;
 
 		// RenderQueue (Level의 모든 RenderCommand를 모아두는 배열).
-		std::vector<RenderCommand> RenderQueue;
+		std::vector<RenderCommand> renderQueue;
 
 		// Singleton 구현을 위한 static 변수.
 		static Renderer* instance;
