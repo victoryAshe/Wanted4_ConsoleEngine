@@ -2,6 +2,7 @@
 #include "Level/Level.h"
 #include "Core/Input.h"
 #include "Util/Util.h"
+#include "Render/Renderer.h"
 
 #include <iostream>
 #include <Windows.h>
@@ -21,6 +22,9 @@ namespace Wanted
 
 		// 설정 파일 load.
 		LoadSetting();
+
+		// Create Renderer instance 
+		renderer = new Renderer(Vector2(setting.width, setting.height));
 
 		// 커서 끄기.
 		Util::TurnOffCursor();
@@ -43,6 +47,8 @@ namespace Wanted
 			input = nullptr;
 		}
 
+		// Delete Renderer instance
+		SafeDelete(renderer);
 	}
 
 	void Engine::Run()
@@ -172,6 +178,41 @@ namespace Wanted
 		// read string size in file
 		size_t readSize = fread(buffer, sizeof(char), 2048, file);
 
+		// Parse string.
+		char* context = nullptr;
+		char* token = nullptr;
+		token = strtok_s(buffer, "\n", &context);
+
+		// 반복해서 자르기.
+		while(token)
+		{
+			// setting text에서 parameter name만 읽기.
+			char header[10] = {};
+			
+			// 문자열 읽기 함수 활용.
+			// 이때 "%s"로 읽으면, space가 있을 시에 그 전까지 읽음.
+			// strtok_s에 Delimiter를 ' '로 설정해서 읽어도 되긴 함.
+			sscanf_s(token, "%s", header, 10);
+
+			// 문자열 비교 및 값 읽기.
+			if(strcmp(header, "framerate")==0)
+			{
+				sscanf_s(token, "framerate = %f", &setting.framerate);
+			}
+			else if (strcmp(header, "width") == 0)
+			{
+				sscanf_s(token, "width = %d", &setting.width);
+			}
+			else if (strcmp(header, "height") == 0)
+			{
+				sscanf_s(token, "height = %d", &setting.height);
+			}
+
+			// 개행 문자로 문자열 분리.
+			token = strtok_s(nullptr, "\n", &context);
+
+		}
+
 		// Data extract using string format.
 		sscanf_s(buffer, "framerate = %f", &setting.framerate);
 
@@ -221,6 +262,10 @@ namespace Wanted
 			return;
 		}
 
+		// Level의 모든 Actor가 Render Data를 Submit.
 		mainLevel->Draw();
+
+		// Renderer에 Draw 명령 전달.
+		renderer->Draw();     
 	}
 }

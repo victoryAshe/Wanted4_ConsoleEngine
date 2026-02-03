@@ -79,11 +79,13 @@ void MenuLevel::Tick(float deltaTime)
 void MenuLevel::Draw()
 {
 	// 메뉴 제목 출력.
-	Util::SetConsolePosition(Vector2::Zero);
-	Util::SetConsoleTextColor(Color::White);
+	//Util::SetConsolePosition(Vector2::Zero);
+	//Util::SetConsoleTextColor(Color::White);
+	//
+	//// Print Text.
+	//std::cout << "Sokoban Game\n\n";
 
-	// Print Text.
-	std::cout << "Sokoban Game\n\n";
+	Renderer::Get().Submit("Sokoban Game", Vector2::Zero);
 
 	// Print Menu Item.
 	for (int ix = 0; ix < static_cast<int>(items.size()); ++ix)
@@ -92,10 +94,16 @@ void MenuLevel::Draw()
 		Color textColor =
 			(ix == currentIndex) ? selectedColor : unselectedColor;
 		
+		Renderer::Get().Submit(
+			items[ix]->text,
+			Vector2(0, 2 + ix),
+			textColor
+		);
+
 		// 색상 설정.
-		Util::SetConsoleTextColor(textColor);
+		//Util::SetConsoleTextColor(textColor);
 
 		// Print Text.
-		std::cout << items[ix]->text<<"\n";
+		//std::cout << items[ix]->text<<"\n";
 	}
 }

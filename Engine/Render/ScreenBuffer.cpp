@@ -71,7 +71,7 @@ namespace Wanted
 	}
 
 	void ScreenBuffer::Clear()
-	{  
+	{
 		// Console Buffer에 있는 Screen Clear.
 		// Graphics -> Clear -> 한 색상(또는 값)으로 덮어쓰기!
 
@@ -95,7 +95,7 @@ namespace Wanted
 		writeRegion.Left = 0;
 		writeRegion.Top = 0;
 		writeRegion.Right = static_cast<short>(screenSize.x - 1);
-		writeRegion.Left = static_cast<short>(screenSize.y - 1);
+		writeRegion.Bottom = static_cast<short>(screenSize.y - 1);
 
 		// Buffer에 전달 받은 글자 배열 설정.
 		WriteConsoleOutputA(
@@ -106,3 +106,4 @@ namespace Wanted
 			&writeRegion
 		);
 	}
+}

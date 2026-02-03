@@ -2,6 +2,7 @@
 
 #include "Level/Level.h"
 #include "Math/Color.h"
+#include "Render/Renderer.h"
 #include <vector>
 
 using namespace Wanted;

@@ -46,10 +46,10 @@ namespace Wanted
 	}
 
 	// ==================== Frame ============================ //
-	
+
 	// 정적 변수 초기화.
 	Renderer* Renderer::instance = nullptr;
-	
+
 	Renderer::Renderer(const Vector2& screenSize)
 		: screenSize(screenSize)
 	{
@@ -105,7 +105,7 @@ namespace Wanted
 		// 콘솔 버퍼 지우기.
 		GetCurrentBuffer()->Clear();
 	}
-	
+
 	void Renderer::Draw()
 	{
 		// Clear Screen.
@@ -113,7 +113,7 @@ namespace Wanted
 
 		// 전제 조건: Level의 모든 Actor가 Renderer에 Submit을 완료해야 함!
 		// RenderQueue를 순회하면서 Frame 채우기.
-		for(const RenderCommand& command: renderQueue)
+		for (const RenderCommand& command : renderQueue)
 		{
 			// 화면에 그릴 text가 없으면 건너뜀.
 			if (!command.text)
@@ -122,7 +122,7 @@ namespace Wanted
 			}
 
 			// 세로 기준 화면 벗어났는지 확인.
-			if(command.position.y < 0
+			if (command.position.y < 0
 				|| command.position.y >= screenSize.y)
 			{
 				continue;
@@ -161,7 +161,8 @@ namespace Wanted
 					= (command.position.y * screenSize.x) + x;
 
 				// Sorting order 비교.
-				if (frame->sortingOrderArray[index] > command.sortingOrder)
+				if (frame->sortingOrderArray[index] 
+					> command.sortingOrder)
 				{
 					// 같은 경우에도 덮어씀.
 					continue;
@@ -177,7 +178,7 @@ namespace Wanted
 				// Update Sorting order.
 				frame->sortingOrderArray[index] = command.sortingOrder;
 			}
-			
+
 		}
 
 		// Draw.
@@ -193,8 +194,8 @@ namespace Wanted
 	void Renderer::Submit(
 		const char* text,
 		const Vector2& position,
-		Color color = Color::White,
-		int sortingOrder = 0
+		Color color,
+		int sortingOrder
 	)
 	{
 		// Create Render Data => Add to Queue

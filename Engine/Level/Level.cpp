@@ -48,6 +48,7 @@ namespace Wanted {
 
 	void Level::Draw()
 	{
+		/*
 		// Actor에 event 흘리기.
 		for (Actor*& actor : actors)
 		{
@@ -79,7 +80,17 @@ namespace Wanted {
 			// 그리기.
 			actor->Draw();
 		}
+		*/
 
+		for (Actor*& actor : actors)
+		{
+			if (!actor->IsActive())
+			{
+				continue;
+			}
+
+			actor->Draw();
+		}
 	}
 
 	void Level::AddNewActor(Actor* newActor)

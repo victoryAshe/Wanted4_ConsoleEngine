@@ -7,12 +7,17 @@ namespace Wanted
 	// 전방 선언
 	class Level;
 	class Input;
+	class Renderer;
 
 	// Engine Setting Structure.
 	struct EngineSetting
 	{
 		// Frame spped(== Framerate.)
 		float framerate = 0.0f;
+
+		// ScreenSize.
+		int width = 0;
+		int height = 0;
 	};
 
 	// Main game engine class.
@@ -61,6 +66,9 @@ namespace Wanted
 
 		// 입력 관리자.
 		Input* input = nullptr;
+
+		// Renderer instance.
+		Renderer* renderer = nullptr;
 
 		// Main Level
 		class Level* mainLevel = nullptr;
