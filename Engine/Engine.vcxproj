@@ -160,6 +160,8 @@ xcopy $(OutDir)Engine.lib $(SolutionDir)Library\Engine\$(Platform)\$(Configurati
     <ClCompile Include="Engine\Engine.cpp" />
     <ClCompile Include="Level\Level.cpp" />
     <ClCompile Include="Math\Vector2.cpp" />
+    <ClCompile Include="Render\Renderer.cpp" />
+    <ClCompile Include="Render\ScreenBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor\Actor.h" />
@@ -170,8 +172,9 @@ xcopy $(OutDir)Engine.lib $(SolutionDir)Library\Engine\$(Platform)\$(Configurati
     <ClInclude Include="Level\Level.h" />
     <ClInclude Include="Math\Color.h" />
     <ClInclude Include="Math\Vector2.h" />
+    <ClInclude Include="Render\ScreenBuffer.h" />
     <ClInclude Include="Util\Util.h" />
-    <ClInclude Include="Core\Renderer.h" />
+    <ClInclude Include="Render\Renderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

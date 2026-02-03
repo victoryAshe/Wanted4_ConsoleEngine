@@ -4,6 +4,8 @@
 #include "Actor/Box.h"
 #include "Level/Level.h"
 
+#include "Game/Game.h"
+
 #include "Interface/ICanPlayerMove.h"
 
 #include <iostream>
@@ -31,6 +33,14 @@ void Player::BeginPlay()
 void Player::Tick(float deltaTime)
 {
 	Actor::Tick(deltaTime);
+
+	// ESC Å° Ã³¸®.
+	if (Wanted::Input::Get().GetKeyDown(VK_ESCAPE))
+	{
+		// Activate Menu.
+		Game::Get().ToggleMenu();
+		return;
+	}
 
 	if (Input::Get().GetKeyDown('Q'))
 	{
